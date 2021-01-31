@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { CardList } from "./components/CardList/CardList";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// class components have access to lifecycle methods
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      robots: [],
+    };
+  }
+
+  componentDidMount() {
+    // make call to endpt
+    fetch("https://jsonplaceholder.typicode.com/users")
+      // take response turn to json format
+      .then((res) => res.json())
+      // update the state with the response data
+      .then((users) => this.setState({ robots: users }));
+  }
+
+  render() {
+    console.log(this.state.robots);
+    return (
+      <div className="App">
+        <CardList robots={this.state.robots}></CardList>
+      </div>
+    );
+  }
 }
 
 export default App;
